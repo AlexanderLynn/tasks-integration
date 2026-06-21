@@ -1,0 +1,7 @@
+{
+  "name": "Tasks Todo App",
+  "homeassistant": "2026.6.0",
+  "hacs": "1.0.0",
+  "render_readme": true,
+  "version": "0.1.0"
+}

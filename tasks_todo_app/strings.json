@@ -1,0 +1,96 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Tasks Todo App",
+        "description": "Enter the connection details for your Tasks Todo App addon",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to Tasks Todo App. Check your connection details and API key."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Tasks Todo App Options",
+        "description": "Configure polling and sync settings",
+        "data": {
+          "poll_interval": "Poll Interval (seconds)",
+          "enable_sync": "Enable Background Sync"
+        }
+      }
+    }
+  },
+  "services": {
+    "create_item": {
+      "name": "Create Item",
+      "description": "Create a new item in a list",
+      "fields": {
+        "list_id": {
+          "name": "List ID",
+          "description": "The ID of the list to add the item to"
+        },
+        "title": {
+          "name": "Title",
+          "description": "The title of the new item"
+        },
+        "description": {
+          "name": "Description",
+          "description": "Optional description for the item"
+        },
+        "tags": {
+          "name": "Tags",
+          "description": "Optional tags for the item"
+        }
+      }
+    },
+    "complete_item": {
+      "name": "Complete Item",
+      "description": "Mark an item as complete",
+      "fields": {
+        "list_id": {
+          "name": "List ID",
+          "description": "The ID of the list containing the item"
+        },
+        "item_id": {
+          "name": "Item ID",
+          "description": "The ID of the item to complete"
+        }
+      }
+    },
+    "undo_item": {
+      "name": "Undo Item",
+      "description": "Undo the completion of an item",
+      "fields": {
+        "list_id": {
+          "name": "List ID",
+          "description": "The ID of the list containing the item"
+        },
+        "item_id": {
+          "name": "Item ID",
+          "description": "The ID of the item to undo"
+        }
+      }
+    },
+    "create_list": {
+      "name": "Create List",
+      "description": "Create a new list",
+      "fields": {
+        "name": {
+          "name": "Name",
+          "description": "The name of the new list"
+        },
+        "description": {
+          "name": "Description",
+          "description": "Optional description for the list"
+        }
+      }
+    }
+  }
+}

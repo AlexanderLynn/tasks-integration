@@ -1,0 +1,12 @@
+{
+  "domain": "tasks_todo_app",
+  "name": "Tasks Todo App",
+  "codeowners": ["@AlexanderLynn"],
+  "config_flow": true,
+  "documentation": "https://github.com/AlexanderLynn/tasks",
+  "requirements": ["aiohttp>=3.9.0"],
+  "version": "0.1.0",
+  "issue_tracker": "https://github.com/AlexanderLynn/tasks/issues",
+  "homeassistant": "2026.6.0",
+  "iot_class": "local_polling"
+}
