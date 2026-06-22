@@ -1,15 +1,23 @@
 """Sensor platform for Tasks Todo App integration."""
+from __future__ import annotations
+
+from typing import Any
 from homeassistant.components.sensor import SensorEntity
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import PERCENTAGE
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
-from typing import Any
 
 from .const import DOMAIN, DATA_COORDINATOR, DATA_CLIENT
 from .entity import TasksAppEntity
 
 
-async def async_setup_entry(hass, entry, async_add_entities: AddEntitiesCallback):
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
     """Set up sensor platform."""
     coordinator = hass.data[DOMAIN][entry.entry_id][DATA_COORDINATOR]
     client = hass.data[DOMAIN][entry.entry_id][DATA_CLIENT]
@@ -53,17 +61,20 @@ async def async_setup_entry(hass, entry, async_add_entities: AddEntitiesCallback
 class ActiveItemsSensor(TasksAppEntity, SensorEntity):
     """Sensor for active items count."""
 
-    def __init__(self, coordinator, list_id, list_name):
+    _attr_icon: str = "mdi:format-list-checks"
+    _attr_native_unit_of_measurement: str = "items"
+
+    def __init__(
+        self, coordinator: Any, list_id: str, list_name: str
+    ) -> None:
         """Initialize sensor."""
         super().__init__(coordinator, list_id)
         self._list_name = list_name
         self._attr_unique_id = f"tasks_{list_id}_active_items"
         self._attr_name = f"Tasks {list_name} Active Items"
-        self._attr_icon = "mdi:format-list-checks"
-        self._attr_native_unit_of_measurement = "items"
 
     @property
-    def native_value(self) -> StateType:
+    def native_value(self) -> int:
         """Return the state."""
         if not self.coordinator.data or "lists" not in self.coordinator.data:
             return 0
@@ -79,16 +90,22 @@ class ActiveItemsSensor(TasksAppEntity, SensorEntity):
 class CompletionPercentSensor(TasksAppEntity, SensorEntity):
     """Sensor for completion percentage."""
 
-    def __init__(self, coordinator, list_id, list_name):
+    _attr_icon: str = "mdi:progress-clock"
+    _attr_native_unit_of_measurement: str = PERCENTAGE
+
+    def __init__(
+        self, coordinator: Any, list_id: str, list_name: str
+    ) -> None:
         """Initialize sensor."""
         super().__init__(coordinator, list_id)
         self._list_name = list_name
         self._attr_unique_id = f"tasks_{list_id}_completion_percent"
         self._attr_name = f"Tasks {list_name} Completion %"
-        self._attr_icon = "mdi:progress-clock"
-        self._attr_native_unit_of_measurement = PERCENTAGE
 
-    @property or "lists" not in self.coordinator.data:
+    @property
+    def native_value(self) -> int:
+        """Return the state."""
+        if not self.coordinator.data or "lists" not in self.coordinator.data:
             return 0
 
         for list_data in self.coordinator.data.get("lists", []):
@@ -98,25 +115,20 @@ class CompletionPercentSensor(TasksAppEntity, SensorEntity):
                     return 0
                 completed = sum(1 for item in items if item.get("completed"))
                 return round((completed / len(items)) * 100)
-        return 0
-
-        completed = sum(1 for item in items if item.get("completed"))
-        return round((completed / len(items)) * 100)
-
-
 class OverdueItemsSensor(TasksAppEntity, SensorEntity):
     """Sensor for overdue items."""
 
-    def __init__(self, coordinator):
+    _attr_icon: str = "mdi:clock-alert"
+    _attr_native_unit_of_measurement: str = "items"
+
+    def __init__(self, coordinator: Any) -> None:
         """Initialize sensor."""
         super().__init__(coordinator)
         self._attr_unique_id = "tasks_overdue_items_total"
         self._attr_name = "Tasks Overdue Items"
-        self._attr_icon = "mdi:clock-alert"
-        self._attr_native_unit_of_measurement = "items"
 
     @property
-    def native_value(self) -> StateType:
+    def native_value(self) -> int:
         """Return the state."""
         if not self.coordinator.data:
             return 0
@@ -141,16 +153,17 @@ class OverdueItemsSensor(TasksAppEntity, SensorEntity):
 class SyncStatusSensor(TasksAppEntity, SensorEntity):
     """Sensor for sync status."""
 
-    def __init__(self, coordinator, client):
+    _attr_icon: str = "mdi:cloud-sync"
+
+    def __init__(self, coordinator: Any, client: Any) -> None:
         """Initialize sensor."""
         super().__init__(coordinator)
         self._client = client
         self._attr_unique_id = "tasks_sync_status"
         self._attr_name = "Tasks Sync Status"
-        self._attr_icon = "mdi:cloud-sync"
 
     @property
-    def native_value(self) -> StateType:
+    def native_value(self) -> str:
         """Return the state."""
         if not self.coordinator.last_update_success:
             return "offline"

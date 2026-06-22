@@ -1,12 +1,15 @@
 """Config flow for Tasks Todo App integration."""
+from __future__ import annotations
+
+from typing import Any, Optional
+
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_API_KEY
-from homeassistant.core import callback
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-import aiohttp
 
-from .const import DOMAIN, CONF_HOST, CONF_PORT, DEFAULT_HOST, DEFAULT_PORT
+from .const import CONF_HOST, CONF_PORT, DEFAULT_HOST, DEFAULT_PORT, DOMAIN
 from .api import TasksAppAPIClient
 
 
@@ -15,9 +18,11 @@ class TasksAppConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     VERSION = 1
 
-    async def async_step_user(self, user_input=None):
+    async def async_step_user(
+        self, user_input: Optional[dict[str, Any]] = None
+    ) -> dict[str, Any]:
         """Handle a flow initiated by the user."""
-        errors = {}
+        errors: dict[str, str] = {}
 
         if user_input is not None:
             # Validate the connection
@@ -52,12 +57,16 @@ class TasksAppConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             data_schema=self._get_schema(),
         )
 
-    async def async_step_import(self, import_data):
+    async def async_step_import(
+        self, import_data: dict[str, Any]
+    ) -> dict[str, Any]:
         """Handle import from configuration.yaml."""
         return await self.async_step_user(import_data)
 
     @staticmethod
-    def _get_schema(data=None):
+    def _get_schema(
+        data: Optional[dict[str, Any]] = None,
+    ) -> vol.Schema:
         """Get the configuration schema."""
         if data is None:
             data = {}
@@ -79,7 +88,9 @@ class TasksAppConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     @staticmethod
     @callback
-    def async_get_options_flow(config_entry):
+    def async_get_options_flow(
+        config_entry: config_entries.ConfigEntry,
+    ) -> TasksAppOptionsFlow:
         """Get the options flow."""
         return TasksAppOptionsFlow(config_entry)
 
@@ -87,7 +98,7 @@ class TasksAppConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 class TasksAppOptionsFlow(config_entries.OptionsFlow):
     """Options flow for Tasks Todo App."""
 
-    def __init__(self, config_entry):
+    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
         """Initialize options flow."""
         self.config_entry = config_entry
 

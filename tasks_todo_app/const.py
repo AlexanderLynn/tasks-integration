@@ -1,4 +1,6 @@
 # Home Assistant Constants for Tasks Todo App Integration
+"""Constants for Tasks Todo App integration."""
+from __future__ import annotations
 
 DOMAIN = "tasks_todo_app"
 VERSION = "1.0.0"

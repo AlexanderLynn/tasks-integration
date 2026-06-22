@@ -1,9 +1,8 @@
 """Main integration file for Tasks Todo App."""
 from __future__ import annotations
 
-import asyncio
 from datetime import timedelta
-from typing import Optional
+from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_API_KEY, Platform
@@ -20,6 +19,7 @@ from .services import setup_services
 
 PLATFORMS: list[Platform] = [Platform.SENSOR]
 SCAN_INTERVAL = timedelta(seconds=30)
+
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -84,7 +84,7 @@ async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
     await hass.config_entries.async_reload(entry.entry_id)
 
 
-async def _fetch_data(client: TasksAppAPIClient) -> dict:
+async def _fetch_data(client: TasksAppAPIClient) -> dict[str, Any]:
     """Fetch data from the API."""
     try:
         lists = await client.get_lists()

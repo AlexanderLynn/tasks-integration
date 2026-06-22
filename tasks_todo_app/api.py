@@ -1,9 +1,11 @@
 """API client for Tasks Todo App addon."""
+from __future__ import annotations
+
 import asyncio
-import aiohttp
-from typing import Any, Optional
-import json
 from datetime import datetime
+from typing import Any, Optional
+
+import aiohttp
 
 class TasksAppAPIClient:
     """Client for Tasks Todo App API."""
