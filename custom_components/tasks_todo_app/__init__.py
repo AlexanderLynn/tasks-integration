@@ -61,6 +61,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Set up services
     await setup_services(hass)
 
+    # Add WebUI link to config entry
+    webui_url = f"http://{host}:{port}"
+    hass.config_entries.async_update_entry(
+        entry,
+        title=f"Tasks Todo App ({host}:{port})",
+        description=f"[Open WebUI]({webui_url})"
+    )
+
     # Listen for unload
     entry.async_on_unload(entry.add_update_listener(update_listener))
 
