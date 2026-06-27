@@ -10,13 +10,15 @@ import aiohttp
 class TasksAppAPIClient:
     """Client for Tasks Todo App API."""
 
-    def __init__(self, host: str, port: int, api_key: str, session: aiohttp.ClientSession):
+    def __init__(self, host: str, port: int, api_key: str, session: aiohttp.ClientSession, mcp_port: Optional[int] = None):
         """Initialize the API client."""
         self.host = host
         self.port = port
         self.api_key = api_key
         self.session = session
+        self.mcp_port = mcp_port
         self.base_url = f"http://{host}:{port}/api"
+        self.mcp_url = f"http://{host}:{mcp_port}/mcp" if mcp_port else None
         self._headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json"

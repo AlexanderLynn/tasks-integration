@@ -7,7 +7,8 @@
         "data": {
           "host": "Host",
           "port": "Port",
-          "api_key": "API Key"
+          "api_key": "API Key",
+          "mcp_port": "MCP Port"
         }
       }
     },

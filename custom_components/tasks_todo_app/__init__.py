@@ -14,7 +14,7 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 from .api import TasksAppAPIClient
-from .const import CONF_HOST, CONF_PORT, DATA_CLIENT, DATA_COORDINATOR, DOMAIN
+from .const import CONF_HOST, CONF_PORT, CONF_MCP_PORT, DATA_CLIENT, DATA_COORDINATOR, DOMAIN
 from .services import setup_services
 
 PLATFORMS: list[Platform] = [Platform.SENSOR]
@@ -33,10 +33,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     host = entry.data.get(CONF_HOST, "localhost")
     port = entry.data.get(CONF_PORT, 8080)
     api_key = entry.data.get(CONF_API_KEY)
+    mcp_port = entry.data.get(CONF_MCP_PORT)
 
     # Create session and client
     session = async_get_clientsession(hass)
-    client = TasksAppAPIClient(host, port, api_key, session)
+    client = TasksAppAPIClient(host, port, api_key, session, mcp_port)
 
     # Create coordinator
     coordinator = DataUpdateCoordinator(

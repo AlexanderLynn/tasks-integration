@@ -9,7 +9,7 @@ from homeassistant.const import CONF_API_KEY
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import CONF_HOST, CONF_PORT, DEFAULT_HOST, DEFAULT_PORT, DOMAIN
+from .const import CONF_HOST, CONF_PORT, CONF_MCP_PORT, DEFAULT_HOST, DEFAULT_PORT, DEFAULT_MCP_PORT, DOMAIN
 from .api import TasksAppAPIClient
 
 
@@ -32,7 +32,8 @@ class TasksAppConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     user_input[CONF_HOST],
                     user_input[CONF_PORT],
                     user_input[CONF_API_KEY],
-                    session
+                    session,
+                    user_input.get(CONF_MCP_PORT)
                 )
                 
                 # Test the connection
@@ -84,6 +85,10 @@ class TasksAppConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_API_KEY,
                 default=data.get(CONF_API_KEY, "")
             ): str,
+            vol.Optional(
+                CONF_MCP_PORT,
+                default=data.get(CONF_MCP_PORT, DEFAULT_MCP_PORT)
+            ): int,
         })
 
     @staticmethod

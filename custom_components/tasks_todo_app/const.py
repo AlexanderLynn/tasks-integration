@@ -9,10 +9,12 @@ VERSION = "1.0.0"
 CONF_HOST = "host"
 CONF_PORT = "port"
 CONF_API_KEY = "api_key"
+CONF_MCP_PORT = "mcp_port"
 
 # Defaults
 DEFAULT_HOST = "localhost"
 DEFAULT_PORT = 8080
+DEFAULT_MCP_PORT = 3000
 DEFAULT_NAME = "Tasks Todo App"
 
 # Data keys
